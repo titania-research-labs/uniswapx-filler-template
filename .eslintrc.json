@@ -1,0 +1,38 @@
+// .eslintrc.json
+
+{
+  "parser": "@typescript-eslint/parser",
+  "parserOptions": {
+    "project": "./tsconfig.json",
+    "sourceType": "commonjs",
+    "ecmaVersion": 2020
+  },
+  "extends": ["eslint:recommended", "plugin:@typescript-eslint/recommended"],
+  "plugins": [
+    "@typescript-eslint",
+    "prettier",
+    "unused-imports",
+    "simple-import-sort"
+  ],
+  "ignorePatterns": [
+    "node_modules/",
+    "dist/",
+    "package.json",
+    "tsconfig.json",
+    ".vscode/"
+  ],
+  "rules": {
+    "@typescript-eslint/no-unused-vars": "off", // We'll use the unused-imports plugin instead
+    "no-restricted-syntax": [
+      "error",
+      {
+        "selector": "TSEnumDeclaration",
+        "message": "Enums are forbidden."
+      }
+    ],
+    "unused-imports/no-unused-imports": "error",
+    "require-await": "error",
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error"
+  }
+}
