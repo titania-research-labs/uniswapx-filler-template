@@ -13,6 +13,7 @@ import { ERC20, ERC20__factory } from '../types/typechain';
 import { IntentWithSignature } from '../types/intent-with-signature';
 import { IntentHash } from '../types/hash';
 import { config } from '../config';
+import { ADDRESS_ZERO } from '@uniswap/v3-sdk';
 
 interface IdentificationServiceConstructorArgs {
   wallet: Wallet;
@@ -108,11 +109,16 @@ export class IdentificationService {
       this.inputTokens,
     );
     if (!intentInputToken) {
-      const nonTargetInputToken = ERC20__factory.connect(
-        intent.info.input.token,
-        this.wallet,
-      );
-      const nonTargetInputSymbol = await nonTargetInputToken.symbol();
+      let nonTargetInputSymbol = 'ETH';
+
+      if (intent.info.input.token !== ADDRESS_ZERO) {
+        const nonTargetInputToken = ERC20__factory.connect(
+          intent.info.input.token,
+          this.wallet,
+        );
+        nonTargetInputSymbol = await nonTargetInputToken.symbol();
+      }
+
       logger.info(
         `An intent found!✨ But input token is not targeted: ${nonTargetInputSymbol}`,
       );
@@ -124,11 +130,16 @@ export class IdentificationService {
       this.outputTokens,
     );
     if (!intentOutputToken) {
-      const nonTargetInputToken = ERC20__factory.connect(
-        intent.info.outputs[0].token,
-        this.wallet,
-      );
-      const nonTargetInputSymbol = await nonTargetInputToken.symbol();
+      let nonTargetInputSymbol = 'ETH';
+
+      if (intent.info.outputs[0].token !== ADDRESS_ZERO) {
+        const nonTargetInputToken = ERC20__factory.connect(
+          intent.info.outputs[0].token,
+          this.wallet,
+        );
+        nonTargetInputSymbol = await nonTargetInputToken.symbol();
+      }
+
       logger.info(
         `An intent found!✨ But output token is not targeted: ${nonTargetInputSymbol}`,
       );
